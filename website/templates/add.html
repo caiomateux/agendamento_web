@@ -1,0 +1,44 @@
+{% extends "base.html" %}{% block title %}Add Event{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h4 align="center">Add Event</h4>
+    <form action="/add" method="POST">
+        <div class="mb-3">
+            <label for="title" class="form-label">Appointment Title</label>
+            <input type="text"
+                   class="form-control"
+                   name="title"
+                   id="title" placeholder="What's going on today?">
+        </div>
+        <div class="mb-3">
+        <label for="start" class="form-label">Start date</label>
+        <input type="text"
+               class="form-control"
+               name="start"
+               id="start"
+               placeholder="YYYY-MM-DD">
+        </div>
+        <div class="mb-3">
+        <label for="end" class="form-label">End date</label>
+        <input type="text"
+               class="form-control"
+               name="end"
+               id="end"
+               placeholder="YYYY-MM-DD">
+        </div>
+         <div class="mb-3">
+        <label for="info" class="form-label">Event url</label>
+        <input type="text"
+               class="form-control"
+               name="info"
+               id="info"
+               placeholder="Add event information">
+        </div>
+
+        <br />
+        <button type="submit"
+            class="btn btn-primary">Login</button
+    </form>
+</div>
+{% endblock %}
