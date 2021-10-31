@@ -12,9 +12,8 @@ events = [{'title' : 'TestEvent',
         'start' : '2021-08-24',
         'end' : '2021-08-25',
         'info' : 'hahaha'
-    },
-]
-
+    }
+    ]
 @cal.route('/calendar')
 def calendar():
     return render_template("calendar.base.html", events=events)
@@ -36,4 +35,5 @@ def add():
             'info' : info
         },
         )
+
     return render_template("add.html")
