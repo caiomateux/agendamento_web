@@ -12,8 +12,6 @@ events = [{'title' : 'TestEvent',
         'start' : '2021-08-24',
         'end' : '2021-08-25',
         'info' : 'hahaha'
-    },
-]
 
 @cal.route('/calendar')
 def calendar():
