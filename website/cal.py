@@ -1,4 +1,9 @@
 from flask import Blueprint, render_template, request
+from .models import User
+from werkzeug.security import generate_password_hash, check_password_hash
+from . import db
+from flask_login import login_user, login_required, logout_user, current_user
+
 
 cal = Blueprint('cal', __name__)
 
@@ -15,8 +20,9 @@ events = [{'title' : 'TestEvent',
     }
     ]
 @cal.route('/calendar')
+@login_required
 def calendar():
-    return render_template("calendar.base.html", events=events)
+    return render_template("calendar.base.html", User=current_user)
 
 
 @cal.route('/add', methods=['GET','POST'])
