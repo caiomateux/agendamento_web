@@ -14,6 +14,9 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
+
+
+
     from .views import views
     from .auth import auth
     from .cal import cal
@@ -22,7 +25,7 @@ def create_app():
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(cal, url_prefix='/')
 
-    from .models import User, Note
+    from .models import User, Note, Event
 
     create_database(app)
 
@@ -40,3 +43,18 @@ def create_database(app):
     if not path.exists('website/' + DB_NAME):
         db.create_all(app=app)
         print('Created Database!')
+
+
+#########help
+
+from flask_mysqldb import MySQL, MySQLdb
+
+app2 = Flask(__name__)
+
+app2.secret_key = "caircocoders-ednalan"
+app2.config['MYSQL_HOST'] = 'localhost'
+app2.config['MYSQL_USER'] = 'root'
+app2.config['MYSQL_PASSWORD'] = ''
+app2.config['MYSQL_DB'] = 'testingdb'
+app2.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+mysql = MySQL(app2)

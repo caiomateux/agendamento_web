@@ -8,11 +8,22 @@ class Note(db.Model):
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     notes = db.relationship('Note')
+    events = db.relationship('Event')
+
+class Event(db.Model):
+    title = db.Column(db.Integer, primary_key=True)
+    start = db.Column(db.String(150))
+    end = db.Column(db.String(150))
+    info = db.Column(db.String(1000))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
+
+
 

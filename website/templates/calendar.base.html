@@ -4,7 +4,8 @@
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.8" />
-     <link
+
+    <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
@@ -27,18 +28,57 @@
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/locales-all.js"></script>
+
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
+          editable: true,
+          selectable: true,
+          aspectRatio: 1.8,
           initialView: 'dayGridMonth',
-          aspectRatio: 2,
+          navLinks: true,
+          dayMaxEvents: true,
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay listWeek'
+          },
+          titleFormat: {month: 'long', year: 'numeric'
+          },
+          buttonText: {today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia', listWeek: 'Lista'
+          },
+          navLinks: true,
+          locale: 'pt-br',
+
+          dateClick: function(info) {
+          alert('clicked ' + info.dateStr);
+           },
+          select: function(info) {
+           alert('selected ' + info.startStr + ' to ' + info.endStr);
+           },
+
+         eventDurationEditable: true,
+         eventTimeFormat: {hour: 'numeric', minute: '2-digit',meridiem: false
+         },
+         events: [
+         {% for row in my_events %}
+         {
+            title: '{{row.title}}',
+            start: '{{row.start}}',
+            end: '{{row.end}}',
+            info: '{{row.info}}',
+         },
+        {% endfor %}
+
+         ]
         });
         calendar.render();
       });
     </script>
 
-        <title>{% block title %}Calendar{% endblock %}</title>
+        <title>{% block title %}Calendário{% endblock %}</title>
 
   </head>
 <body>
@@ -53,12 +93,89 @@
 
   <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-        <a class="nav-link" href="add">Add Events</a>
-        <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+        <a class="nav-link" href="/">Início<span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" id="signUp" href="/sign-up">Cadastrar</a>
+        <a class="nav-link" href="/calendar"> Agenda <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" id="logout" href="/logout">Sair</a>
         </div>
   </div>
 </nav>
+ <br> </br>
+  <div class="container">
+    <div class="row">
+        <div class="col md-12">
+
+            <div class="jumbotron p-2">
+
+                <h4>Agenda de Consultas<button type="button"  class="btn btn-success float-right"
+                data-toggle="modal" data-target="#mymodal">Adicionar</button> </h4>
+            </div>
+        </div>
+    </div>
+  </div>
+
+<div id="mymodal" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+
+            <h4 class="modal-title">Nova Consulta</h4>
+         </div>
+         <div class="modal-body">
+
+            <form action="{{url_for('cal.add')}}" method="POST">
+
+               <div class="form-group">
+                  <label>Consulta:</label>
+                  <input type="text"
+                   class="form-control"
+                   name="title"
+                   id="title" placeholder="Título">
+               </div>
+
+                <div class="form-group">
+                  <label>Início:</label>
+                  <input type="text"
+               class="form-control"
+               name="start"
+               id="start"
+               placeholder="Ano-Mês-Dia">
+               </div>
+
+                <div class="form-group">
+                  <label>Até:</label>
+                  <input type="text"
+               class="form-control"
+               name="end"
+               id="end"
+               placeholder="Ano-Mês-Dia">
+               </div>
+
+                <div class="form-group">
+                    <label class="form-group">Anotações:</label>
+                    <input type="text"
+               class="form-control"
+               name="info"
+               id="info"
+               placeholder="Mais informações">
+                </div>
+
+
+               <div class="form-group">
+                  <button class="btn btn-primary" type="submit">Salvar</button>
+                   <button class="btn btn-secondary" type="reset">Excluir</button>
+               </div>
+
+
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+         </div>
+      </div>
+   </div>
+</div>
+
 
   <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
