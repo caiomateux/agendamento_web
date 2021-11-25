@@ -6,9 +6,9 @@ try:
     print("Successfully Connected to SQLite")
 
     sqlite_insert_query = """INSERT INTO Event
-                          (id, title, start, end_event, info, user_id) 
+                          (id, title, start, end, info, user_id) 
                            VALUES 
-                          (2,'test2','2021-11-25 15:00','2021-11-25 16:00', 'information', 1)"""
+                          (8,'Evento Longo','2021-11-12 15:00','2021-11-18 16:00', 'information', 1)"""
 
     count = cursor.execute(sqlite_insert_query)
     sqliteConnection.commit()
