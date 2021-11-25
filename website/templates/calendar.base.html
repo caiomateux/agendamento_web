@@ -65,12 +65,13 @@
          events: [
          {% for row in my_events %}
          {
+            id: '{{row.id}}',
             title: '{{row.title}}',
             start: '{{row.start}}',
-            end: '{{row.end}}',
-            info: '{{row.info}}',
+            end_event: '{{row.end_event}}',
+            info: '{{row.info}}'
          },
-        {% endfor %}
+         {% endfor %}
 
          ]
         });
@@ -146,8 +147,8 @@
                   <label>Até:</label>
                   <input type="text"
                class="form-control"
-               name="end"
-               id="end"
+               name="end_event"
+               id="end_event"
                placeholder="Ano-Mês-Dia">
                </div>
 

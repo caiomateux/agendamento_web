@@ -11,24 +11,26 @@ cal = Blueprint('cal', __name__)
 @login_required
 def calendar():
     all_events = Event.query.all()
-    return render_template("calendar.base.html", events=all_events, user=current_user, calendar=calendar)
+    return render_template("calendar.base.html", my_events=all_events, user=current_user, calendar=calendar)
 
 
-@cal.route('/add', methods=['POST'])
+@cal.route('/add', methods=['GET','POST'])
 @login_required
 def add():
     if request.method == "POST":
         title = request.form['title']
         start = request.form['start']
-        end = request.form['end']
+        end_event = request.form['end_event']
         info = request.form['info']
 
-        my_events = Event(title=title, start=start, end=end, info=info, user_id=current_user.id)
+        my_events = Event(title=title, start=start, end_event=end_event, info=info, user_id=current_user.id)
 
-        try:
-            db.session.add(my_events)
-            return db.session.commit()
-        except exc.IntegrityError:
-            db.session.rollback()
+        db.session.add(my_events)
+        db.session.commit()
+        # try:
+        #     db.session.add(my_events)
+        #     return db.session.commit()
+        # except exc.IntegrityError:
+        #     db.session.rollback()
 
     return redirect(url_for('cal.calendar'))
