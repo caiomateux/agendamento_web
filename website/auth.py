@@ -15,13 +15,13 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
-                flash('Logged in successfully!', category='success')
+                flash('Entrou com sucesso!', category='success')
                 login_user(user, remember=True)
                 return redirect(url_for('cal.calendar'))
             else:
-                flash('Incorrect password, try again', category='error')
+                flash('Senha incorreta, tente novamente.', category='error')
         else:
-            flash('Email does not exist', category='error  ')
+            flash('E-mail não cadastrado.', category='error')
 
     return render_template("login.html", user=current_user)
 
@@ -29,7 +29,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash('You have been logged out')
+    flash('Você foi desconectado')
     return redirect(url_for('auth.login'))
 
 @auth.route('/sign-up', methods=['GET','POST'])
@@ -42,21 +42,21 @@ def sign_up():
 
         user = User.query.filter_by(email=email).first()
         if user:
-            flash('Email already exists', category='error')
+            flash('E-mail já cadastrado', category='error')
         elif len(email) < 4:
-            flash('E-mail must be greater than 3 characters', category='error')
+            flash('É necessário inserir mais que 3 caracteres', category='error')
         elif len(first_name) < 2:
-            flash('First name required', category='error')
+            flash('Informar o primeiro nome', category='error')
         elif password1 != password2:
-            flash('Passwords does\'t match', category='error')
+            flash('As senhas não correspondem', category='error')
         elif len(password1) < 7:
-            flash('Password must be at least 7 characters', category= 'error')
+            flash('Senha deve conter mais que 7 caracteres', category= 'error')
         else:
             new_user = User(email=email, first_name=first_name, password=generate_password_hash(password1, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
             login_user(user, remember=True)
-            flash('Account created!', category='success')
+            flash('Conta criada com sucesso!', category='success')
             return redirect(url_for('cal.calendar'))
 
     return render_template("sign_up.html", user=current_user)

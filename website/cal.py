@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from .models import Event
 from . import db
@@ -27,10 +27,33 @@ def add():
 
         db.session.add(my_events)
         db.session.commit()
-        # try:
-        #     db.session.add(my_events)
-        #     return db.session.commit()
-        # except exc.IntegrityError:
-        #     db.session.rollback()
+    return redirect(url_for('cal.calendar'))
+
+
+@cal.route('/update', methods=['GET', 'POST'])
+def update():
+    if request.method == 'POST':
+        my_events = Event.query.get(request.form.get('id'))
+
+        my_events.title = request.form['title']
+        my_events.start = request.form['start']
+        my_events.end_event = request.form['end_event']
+        my_events.info = request.form['info']
+
+        db.session.flush()
+        db.session.commit()
+        flash("Agendamento atualizado")
+
+        return redirect(url_for('cal.calendar'))
+
+
+@cal.route('/delete/<id>/', methods=['GET', 'POST'])
+def delete(id):
+    my_events = Event.query.get(id)
+    db.session.delete(my_events)
+    db.session.flush()
+    db.session.commit()
+    flash("Evento apagado")
 
     return redirect(url_for('cal.calendar'))
+
