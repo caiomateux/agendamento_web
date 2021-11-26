@@ -48,6 +48,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/locales-all.js"></script>
 
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"> </script>
+
+
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
@@ -61,11 +64,11 @@
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay listWeek'
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
           },
           titleFormat: {month: 'long', year: 'numeric'
           },
-          buttonText: {today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia', listWeek: 'Lista'
+          buttonText: {today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia', listMonth: 'Lista'
           },
           navLinks: true,
           locale: 'pt-br',
@@ -76,17 +79,17 @@
           select: function(event, jsEvent, view) {
             $('#modalTitle').html(event.title);
             $('#modalBody').html(event.description);
-<!--            $('#calendarModal #start').val(event.start.toLocaleString());-->
-<!--            $('#calendarModal #end_event').val(event.end.toLocaleString());-->
-            $('#calendarModal').modal();
+            $('#calendarModal #start').val(event.start.toLocaleString());
+            $('#calendarModal #end_event').val(event.end.toLocaleString());
+            $('#mymodal').modal('show');
            },
 
-<!--        eventClick:  function(events, jsEvent, view) {-->
-<!--            $('#modalTitle').html(event.title);-->
-<!--            $('#modalBody').html(event.description);-->
-<!--            $('#eventUrl').attr('href',event.url);-->
-<!--            $('#calendarModal').modal();-->
-<!--        },-->
+        eventClick:  function(events, jsEvent, view) {
+            $('#modalTitle').html(event.title);
+            $('#modalBody').html(event.description);
+            $('#eventUrl').attr('href',event.url);
+            $('#calendarModal').modal();
+        },
 
 
          eventDurationEditable: true,
@@ -170,7 +173,8 @@
                class="form-control"
                name="start"
                id="start"
-               placeholder="Ano-Mês-Dia">
+               onkeypress="DataHora(event, this)"
+               placeholder="aaaa-mm-dd hh:mm"   >
                </div>
 
                 <div class="form-group">
@@ -179,10 +183,11 @@
                class="form-control"
                name="end_event"
                id="end_event"
-               placeholder="Ano-Mês-Dia">
+               onkeypress="DataHora(event, this)"
+                placeholder="aaaa-mm-dd hh:mm">
                </div>
 
-                <div class="form-group">
+                <div class="form-group row">
                     <label class="form-group">Anotações:</label>
                     <input type="text"
                class="form-control"
@@ -207,67 +212,7 @@
    </div>
 </div>
 
-  <div id="calendarModal" class="modal fade">
-<div class="modal-dialog">
-    <div class="modal-content">
 
-        <div class="modal-header">
-            <h4 class="modal-title">Nova Consulta</h4>
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
-            <h4 id="modalTitle" class="modal-title"></h4>
-        </div>
-
-        <div id="modalBody" class="modal-body">
-        <form action="{{url_for('cal.add')}}" method="POST">
-
-               <div class="form-group">
-                  <label>Consulta:</label>
-                  <input type="text"
-                   class="form-control"
-                   name="title"
-                   id="title" placeholder="Título">
-               </div>
-
-                <div class="form-group">
-                  <label>Início:</label>
-                  <input type="text"
-               class="form-control"
-               name="start"
-               id="start"
-               placeholder="Ano-Mês-Dia">
-               </div>
-
-                <div class="form-group">
-                  <label>Até:</label>
-                  <input type="text"
-               class="form-control"
-               name="end_event"
-               id="end_event"
-               placeholder="Ano-Mês-Dia">
-               </div>
-
-                <div class="form-group">
-                    <label class="form-group">Anotações:</label>
-                    <input type="text"
-               class="form-control"
-               name="info"
-               id="info"
-               placeholder="Mais informações">
-                </div>
-
-                <div class="form-group">
-                  <button class="btn btn-primary" type="submit">Salvar</button>
-                </div>
-
-
-            </form>
-
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-    </div>
-</div>
 </div>
 
 {%block body %}
