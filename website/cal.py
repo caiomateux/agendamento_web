@@ -47,7 +47,7 @@ def update():
         return redirect(url_for('cal.calendar'))
 
 
-@cal.route('//delete/<id>/', methods=['GET', 'POST'])
+@cal.route('/delete/<id>/', methods=['GET', 'POST'])
 def delete(id):
     my_events = Event.query.get(id)
     db.session.delete(my_events)
