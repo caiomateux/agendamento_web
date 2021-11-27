@@ -6,8 +6,6 @@ from sqlalchemy import exc
 
 cal = Blueprint('cal', __name__)
 
-
-
 @cal.route('/calendar')
 @login_required
 def calendar():
@@ -56,4 +54,5 @@ def delete(id):
     flash("Evento apagado")
 
     return redirect(url_for('cal.calendar'))
+
 
