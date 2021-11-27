@@ -61,7 +61,7 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
           editable: true,
           selectable: true,
-          aspectRatio: 1.8,
+          aspectRatio: 2.15,
           initialView: 'dayGridMonth',
           navLinks: true,
           dayMaxEvents: true,
@@ -80,11 +80,11 @@
           dateClick: function(info) {
 
            },
-          select: function(event, jsEvent, view) {
+          select: function(info) {
             $('#modalTitle').html(event.title);
             $('#modalBody').html(event.description);
-            $('#calendarModal #start').val(event.start.toLocaleString());
-            $('#calendarModal #end_event').val(event.end.toLocaleString());
+            $('#calendarModal #start').val(info.start.toLocaleString());
+            $('#calendarModal #end_event').val(info.end.toLocaleString());
             $('#mymodal').modal('show');
            },
 
@@ -144,7 +144,31 @@
         </div>
     </div>
 </nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {%if messages%}
+      {% for category, message in messages %}
+      {% if category == 'error' %}
+      <div class="alert alert-danger alter-dismissable fade show", role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% else %}
+      <div class="alert alert-success alter-dismissable fade show", role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+    {% endwith %}
+
 <p></p>
+
 <div class="container">
     <div class="row">
         <div class="col md-12">
@@ -171,7 +195,7 @@
             </div>
             <div class="modal-body">
 
-                <form action="{{url_for('cal.add')}}" method="POST">
+                <form action="{{url_for('cal.add', id=my_events['id'])}}" method="POST">
 
                     <div class="form-group">
                         <label>Consulta:</label>
@@ -244,18 +268,17 @@
                         <dd class="col-sm-9" id="title"></dd>
 
                         <dt class="col-sm-3">Início:</dt>
-                        <dd class="col-sm-9" id="start"></dd>
+                        <dd class="col-sm-9" id="start" ></dd>
 
                         <dt class="col-sm-3">Fim:</dt>
                         <dd class="col-sm-9" id="end_event"></dd>
 
-                        <dt class="col-sm-3">Informações:</dt>
-                        <dd class="col-sm-9" id="info"></dd>
+
                     </dl>
                     <button class="btn btn-canc-vis btn-warning">Editar</button>
                 </div>
                 <div class="form">
-                    <form class="form-horizontal" method="POST" action="{{url_for('cal.update')}}">
+                    <form class="form-horizontal" method="POST" action="{{url_for('cal.update', id=my_events['id'])}}">
 
                         <div class="form-group">
                             <label>Consulta:</label>

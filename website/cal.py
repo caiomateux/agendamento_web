@@ -7,12 +7,12 @@ from sqlalchemy import exc
 cal = Blueprint('cal', __name__)
 
 
+
 @cal.route('/calendar')
 @login_required
 def calendar():
     all_events = Event.query.all()
     return render_template("calendar.base.html", my_events=all_events, user=current_user, calendar=calendar)
-
 
 @cal.route('/add', methods=['GET','POST'])
 @login_required
@@ -30,7 +30,7 @@ def add():
     return redirect(url_for('cal.calendar'))
 
 
-@cal.route('/update', methods=['GET', 'POST'])
+@cal.route('/update/', methods=['GET', 'POST'])
 def update():
     if request.method == 'POST':
         my_events = Event.query.get(request.form.get('id'))
@@ -47,7 +47,7 @@ def update():
         return redirect(url_for('cal.calendar'))
 
 
-@cal.route('/delete/<id>/', methods=['GET', 'POST'])
+@cal.route('/delete', methods=['GET', 'POST'])
 def delete(id):
     my_events = Event.query.get(id)
     db.session.delete(my_events)
